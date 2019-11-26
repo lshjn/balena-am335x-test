@@ -29,7 +29,7 @@ ENV PATH $PATH:$CROSSTOOL_DIR/bin
 RUN sleep 5
 RUN whereis  arm-armv7hf-linux-gnueabi-gcc
 RUN cd $CROSSTOOL_DIR
-RUN find  -name "*arm-armv7hf-linux-gnueabi-gcc*"
+RUN find  -name "*arm-armv7hf-linux-gnueabi-gcc*" > $CROSSTOOL_DIR/find.log
 RUN sleep 5
 COPY . /
 #RUN sed -i -e "s@^CT_PREFIX_DIR.*@CT_PREFIX_DIR="$TOOLCHAIN_DIR/${CT_TARGET}"@" .config
@@ -51,14 +51,17 @@ ENV OBJCOPY arm-armv7hf-linux-gnueabi-objcopy
 ENV RANLIB arm-armv7hf-linux-gnueabi-ranlib
 ENV F77 "arm-armv7hf-linux-gnueabi-g77 ${CCFLAGS}"
 RUN unset LIBC
+
 RUN apt-get update &&\
-        apt-get install -y wget unzip gcc
-RUN     wget https://github.com/lshjn/docker-335x-test/archive/master.zip &&\
-        unzip master.zip &&\
-        cd docker-335x-test-master &&\
-        $TOOLCHAIN_DIR/bin/arm-armv7hf-linux-gnueabi-gcc -o test test.c
+        apt-get install -y wget unzip
+		
+#RUN     wget https://github.com/lshjn/docker-335x-test/archive/master.zip &&\
+#        unzip master.zip &&\
+#        cd docker-335x-test-master &&\
+#        $TOOLCHAIN_DIR/bin/arm-armv7hf-linux-gnueabi-gcc -o test test.c
 #第二阶段，新建基于busybox的镜像，里面包括程序运行需要的必要环境
 FROM busybox@sha256:fe81fcea1790604cb78c3191507809fcaea34a7d81afeb71526ad8b138f81268
 WORKDIR /work_test
-COPY --from=builder /work/docker-335x-test-master/test .
+#COPY --from=builder /work/docker-335x-test-master/test .
+COPY --from=builder $CROSSTOOL_DIR/find.log .
 CMD ["./test"]
