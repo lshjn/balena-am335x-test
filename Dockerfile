@@ -29,6 +29,8 @@ ENV PATH $PATH:$CROSSTOOL_DIR/bin
 RUN sleep 5
 RUN whereis  arm-armv7hf-linux-gnueabi-gcc
 RUN sleep 5
+RUN which  arm-armv7hf-linux-gnueabi-gcc
+
 COPY . /
 #RUN sed -i -e "s@^CT_PREFIX_DIR.*@CT_PREFIX_DIR="$TOOLCHAIN_DIR/${CT_TARGET}"@" .config
 #RUN ct-ng build
