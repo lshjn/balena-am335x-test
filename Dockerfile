@@ -20,8 +20,6 @@ RUN	wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.17.0.tar.b
 	&& cd crosstool-ng-1.17.0 \
 	&& ./configure --prefix=$CROSSTOOL_DIR \
 	&& make \
-	&& touch $CROSSTOOL_DIR/find.log \
-	&& find -name "*gnueabi*" >> $CROSSTOOL_DIR/find.log \
 	&& make install \
 	&& cd ..
 
@@ -29,8 +27,8 @@ ENV PATH $PATH:$CROSSTOOL_DIR/bin
 
 # Create toolchain
 COPY . /
-#RUN sed -i -e "s@^CT_PREFIX_DIR.*@CT_PREFIX_DIR="$TOOLCHAIN_DIR/${CT_TARGET}"@" .config
-#RUN ct-ng build
+RUN sed -i -e "s@^CT_PREFIX_DIR.*@CT_PREFIX_DIR="$TOOLCHAIN_DIR/${CT_TARGET}"@" .config
+RUN ct-ng build
 ENV PATH $PATH:$TOOLCHAIN_DIR/arm-armv7hf-linux-gnueabi/bin/
 
 ENV CCFLAGS -march=armv7-a-mfloat-abi=hardfp
