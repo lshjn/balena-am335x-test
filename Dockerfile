@@ -28,7 +28,7 @@ ENV PATH $PATH:$CROSSTOOL_DIR/bin
 # Create toolchain
 RUN sleep 5
 RUN whereis  arm-armv7hf-linux-gnueabi-gcc
-RUN cd /opt/toolchain
+RUN cd $CROSSTOOL_DIR
 RUN find  -name "*arm-armv7hf-linux-gnueabi-gcc*"
 RUN sleep 5
 COPY . /
