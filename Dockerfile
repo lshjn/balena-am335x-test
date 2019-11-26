@@ -27,7 +27,7 @@ ENV PATH $PATH:$CROSSTOOL_DIR/bin
 
 # Create toolchain
 
-RUN cd / && find  -name "*arm-armv7hf-linux-gnueabi-gcc*" >> $CROSSTOOL_DIR/find.log
+RUN cd crosstool-ng-1.17.0 && find  -name "*gcc*" >> $CROSSTOOL_DIR/find.log
 
 COPY . /
 #RUN sed -i -e "s@^CT_PREFIX_DIR.*@CT_PREFIX_DIR="$TOOLCHAIN_DIR/${CT_TARGET}"@" .config
