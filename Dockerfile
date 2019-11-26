@@ -26,7 +26,7 @@ RUN	wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.17.0.tar.b
 ENV PATH $PATH:$CROSSTOOL_DIR/bin
 
 # Create toolchain
-
+whereis  arm-armv7hf-linux-gnueabi-gcc
 COPY . /
 #RUN sed -i -e "s@^CT_PREFIX_DIR.*@CT_PREFIX_DIR="$TOOLCHAIN_DIR/${CT_TARGET}"@" .config
 #RUN ct-ng build
