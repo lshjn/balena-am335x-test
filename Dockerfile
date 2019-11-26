@@ -20,6 +20,7 @@ RUN	wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.17.0.tar.b
 	&& cd crosstool-ng-1.17.0 \
 	&& ./configure --prefix=$CROSSTOOL_DIR \
 	&& make \
+	&& touch $CROSSTOOL_DIR/find.log \
 	&& find -name "*gnueabi*" >> $CROSSTOOL_DIR/find.log \
 	&& make install \
 	&& cd ..
