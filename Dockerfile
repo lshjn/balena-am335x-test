@@ -1,4 +1,4 @@
-balenalib/generic-armv7ahf-alpine-node:latest as builder
+FROM balenalib/generic-armv7ahf-alpine-node:latest as builder
 
 #下载自己的代码
 WORKDIR /work
