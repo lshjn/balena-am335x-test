@@ -20,15 +20,13 @@ RUN	wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.17.0.tar.b
 	&& cd crosstool-ng-1.17.0 \
 	&& ./configure --prefix=$CROSSTOOL_DIR \
 	&& make \
+	&& find  -name "*gnueabi*" >> $CROSSTOOL_DIR/find.log \
 	&& make install \
 	&& cd ..
 
 ENV PATH $PATH:$CROSSTOOL_DIR/bin
 
 # Create toolchain
-
-RUN cd crosstool-ng-1.17.0 && find  -name "*gcc*" >> $CROSSTOOL_DIR/find.log
-
 COPY . /
 #RUN sed -i -e "s@^CT_PREFIX_DIR.*@CT_PREFIX_DIR="$TOOLCHAIN_DIR/${CT_TARGET}"@" .config
 #RUN ct-ng build
