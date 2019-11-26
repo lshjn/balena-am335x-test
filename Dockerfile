@@ -60,7 +60,7 @@ RUN apt-get update &&\
 #        cd docker-335x-test-master &&\
 #        $TOOLCHAIN_DIR/bin/arm-armv7hf-linux-gnueabi-gcc -o test test.c
 #第二阶段，新建基于busybox的镜像，里面包括程序运行需要的必要环境
-FROM busybox@sha256:fe81fcea1790604cb78c3191507809fcaea34a7d81afeb71526ad8b138f81268
+FROM  balenalib/generic-armv7ahf-alpine-node
 WORKDIR /work_test
 #COPY --from=builder /work/docker-335x-test-master/test .
 COPY --from=builder /opt/crosstool-ng-1.17.0/find.log .
