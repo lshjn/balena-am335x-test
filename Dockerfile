@@ -11,4 +11,4 @@ RUN     wget https://github.com/lshjn/docker-335x-test/archive/master.zip &&\
 FROM  balenalib/generic-armv7ahf-alpine-node
 WORKDIR /work_test
 COPY --from=builder /work_app/test .
-CMD ["/bin/bash"]
+CMD ["/bin/sh"]
