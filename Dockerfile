@@ -5,7 +5,7 @@ FROM lshjn/armv7hf-toolchain:latest as builder
 RUN     wget https://github.com/lshjn/docker-335x-test/archive/master.zip &&\
         unzip master.zip &&\
         cd docker-335x-test-master &&\
-        $TOOLCHAIN_DIR/bin/arm-armv7hf-linux-gnueabi-gcc -o test test.c
+        arm-armv7hf-linux-gnueabi-gcc -o test test.c
 #第二阶段，新建基于busybox的镜像，里面包括程序运行需要的必要环境
 FROM  balenalib/generic-armv7ahf-alpine-node
 WORKDIR /work_test
