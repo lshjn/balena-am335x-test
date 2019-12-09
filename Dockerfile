@@ -5,10 +5,10 @@ WORKDIR /work_app
 RUN     wget https://github.com/lshjn/docker-335x-test/archive/master.zip &&\
         unzip master.zip &&\
         cd docker-335x-test-master &&\
-        arm-armv7hf-linux-gnueabi-gcc -o test test.c &&\
-		cp test /work_app
+        arm-armv7hf-linux-gnueabi-gcc -o test1 test.c &&\
+		cp test1 /work_app
 #第二阶段，新建基于busybox的镜像，里面包括程序运行需要的必要环境
 FROM  busybox@sha256:783d05e2c73f48d4499387b807caf11b0b3afef5e17e225643b4b4558b21e221
 WORKDIR /work_test
-COPY --from=builder /work_app/test .
+COPY --from=builder /work_app/test1 .
 CMD ["/bin/sh"]
