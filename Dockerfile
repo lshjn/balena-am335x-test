@@ -8,7 +8,7 @@ RUN     wget https://github.com/lshjn/docker-335x-test/archive/master.zip &&\
         arm-armv7hf-linux-gnueabi-gcc -o test1 test.c &&\
 		cp test1 /work_app
 #第二阶段，新建基于busybox的镜像，里面包括程序运行需要的必要环境
-FROM  busybox@sha256:76b76cf09edb25ac1d082b1f0feb9adfa7181c51a3580b41cc17a6eb56e11ca1
+FROM  arm32v7/alpine
 WORKDIR /work_test
 COPY --from=builder /work_app/test1 .
 CMD ["/bin/sh"]
