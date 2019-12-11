@@ -1,14 +1,27 @@
-#第一阶段，创建一个ubuntu的容器，里面安装gcc编译工具，并下载源码编译
-#对不同的架构需要安装相应的gcc工具链，这里演示x86平台
-FROM lshjn/armv7hf-toolchain-test:gcc7.4.0 as builder
-WORKDIR /work_app		
+FROM lshjn/alpine:gcc_8.3.0 as get_env 
+WORKDIR /		
+
+FROM lshjn/armv7hf-toolchain:musl_gcc8.3.0_env as builder 
+WORKDIR /alpine_rootfs
+ENV CCFLAGS -march=armv7-a -mfloat-abi=hard
+
+COPY --from=get_env /bin bin/ 
+COPY --from=get_env /bin etc/ 
+COPY --from=get_env /bin sbin/ 
+COPY --from=get_env /usr usr/
+COPY --from=get_env /lib lib/
+
+RUN cp /alpine_rootfs/usr/lib/gcc/armv7-alpine-linux-musleabihf/8.3.0/* /opt/toolchain/arm-armv7hf-linux-musleabi/lib/gcc/arm-armv7hf-linux-musleabi/8.3.0/ -rf
+
 RUN     wget https://github.com/lshjn/docker-335x-test/archive/master.zip &&\
         unzip master.zip &&\
-        cd docker-335x-test-master &&\
-        arm-armv7hf-linux-gnueabi-gcc -o test1 test.c&&\
-		cp test1 /work_app
-#第二阶段，新建基于busybox的镜像，里面包括程序运行需要的必要环境
-FROM  arm32v7/busybox:glibc
-WORKDIR /work_test
-COPY --from=builder /work_app/test1 .
+        cd docker-335x-test-master&&\ 
+	arm-armv7hf-linux-musleabi-gcc -march=armv7-a -marm -mthumb-interwork -mfloat-abi=hard -mfpu=neon -mtune=cortex-a8 --sysroot=/alpine_rootfs -o test test.c
+
+FROM arm32v7/alpine
+WORKDIR /app
+
+COPY --from=builder /alpine_rootfs/docker-335x-test-master/test .
+
+
 CMD ["/bin/sh"]
